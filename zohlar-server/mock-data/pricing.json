@@ -1,0 +1,27 @@
+[
+    {
+      "pricing": {
+        "productId": "12345",
+        "basePrice": 500,
+        "availableFinancing": true,
+        "financingOptions": ["12 months interest-free", "36 months low-interest"]
+      }
+    },
+    {
+      "pricing": {
+        "productId": "67890",
+        "basePrice": 400,
+        "availableFinancing": true,
+        "financingOptions": ["6 months interest-free", "24 months low-interest"]
+      }
+    },
+    {
+      "pricing": {
+        "productId": "11223",
+        "basePrice": 800,
+        "availableFinancing": true,
+        "financingOptions": ["24 months interest-free", "48 months low-interest"]
+      }
+    }
+  ]
+  

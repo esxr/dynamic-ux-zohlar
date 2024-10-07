@@ -1,0 +1,18 @@
+{
+  "name": "zohlar-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node mock-api",
+    "dev": "nodemon mock-api"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0",
+    "winston": "^3.14.2",
+    "winston-daily-rotate-file": "^5.0.0"
+  }
+}

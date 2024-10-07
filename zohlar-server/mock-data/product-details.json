@@ -1,0 +1,39 @@
+[
+    {
+      "product_details": {
+        "productId": "12345",
+        "productName": "Solar Panel A",
+        "manufacturer": "Solar Co",
+        "efficiency": 19.5,
+        "warrantyYears": 25,
+        "powerOutput": 300,
+        "dimensions": "1.6m x 1m",
+        "productDescription": "High-efficiency solar panel."
+      }
+    },
+    {
+      "product_details": {
+        "productId": "67890",
+        "productName": "Solar Panel B",
+        "manufacturer": "Eco Solar",
+        "efficiency": 18.2,
+        "warrantyYears": 20,
+        "powerOutput": 250,
+        "dimensions": "1.4m x 0.9m",
+        "productDescription": "Economical solar panel with moderate efficiency."
+      }
+    },
+    {
+      "product_details": {
+        "productId": "11223",
+        "productName": "Solar Panel C",
+        "manufacturer": "Green Energy",
+        "efficiency": 21.0,
+        "warrantyYears": 30,
+        "powerOutput": 350,
+        "dimensions": "1.8m x 1m",
+        "productDescription": "Premium solar panel with top efficiency and long warranty."
+      }
+    }
+  ]
+  

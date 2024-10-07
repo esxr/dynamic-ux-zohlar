@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:3000
+
+### Test Listing All Products
+GET {{baseUrl}}/products/list
+Content-Type: application/json
+
+### Test Product Details by Product Name
+GET {{baseUrl}}/products/details?productName=Solar%20Panel%20A
+Content-Type: application/json
+
+### Test Product Details for another Product
+GET {{baseUrl}}/products/details?productName=Solar%20Panel%20B
+Content-Type: application/json
+
+### Test Product Pricing by Product ID
+GET {{baseUrl}}/products/pricing?productId=12345
+Content-Type: application/json
+
+### Test Pricing for another Product
+GET {{baseUrl}}/products/pricing?productId=67890
+Content-Type: application/json
+
+### Test Installation Availability
+GET {{baseUrl}}/installation/availability
+Content-Type: application/json
+
+### Test Savings Estimates
+GET {{baseUrl}}/estimate/savings
+Content-Type: application/json
+
+### Test Incentives
+GET {{baseUrl}}/incentives?state=CA
+Content-Type: application/json
+
+### Test Purchase Confirmation
+GET {{baseUrl}}/purchase/confirmation
+Content-Type: application/json
