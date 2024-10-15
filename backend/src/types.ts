@@ -44,6 +44,21 @@ export interface PricingResponse {
   pricing: Pricing;
 }
 
+export interface FinancingOption {
+  optionId: string;
+  type: string; // loan, lease, payment_plan
+  description: string;
+  terms: string; // e.g., "60 months"
+  interestRate: number; // in percentage
+  monthlyPayment: number; // in dollars
+  totalCost: number; // total cost in dollars
+}
+
+export interface FinancingOptionsResponse {
+  financingOptions: FinancingOption[];
+}
+
+
 /**
  * ----------------------------------------------------
  * ------------ /installation/availability --------------

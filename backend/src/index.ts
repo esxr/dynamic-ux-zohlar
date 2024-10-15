@@ -20,15 +20,17 @@ import {
   webSearchTool,
   callSolarCompanyAPI,
   productListTool,
+  financingOptionsTool
 } from "tools.js";
 import { z } from "zod";
-import { ProductDetails, ProductDetailsResponse, ProductPurchase } from "types.js";
+import { ProductDetails, ProductDetailsResponse, ProductPurchase, FinancingOption } from "types.js";
 
 
 const GraphAnnotation = Annotation.Root({
   ...MessagesAnnotation.spec,
   requestedProductPurchaseDetails: Annotation<ProductPurchase>,
   suitableProductDetails: Annotation<ProductDetails>,
+  financingOptions: Annotation<FinancingOption[]> // Add financing options annotation
 });
 
 const llm = new ChatOpenAI({
@@ -46,7 +48,7 @@ const callModel = async (state: typeof GraphAnnotation.State) => {
     content:
       "You are a solar energy expert specializing in helping users select, purchase, and manage solar energy products. " +
       "You have access to a range of tools that can assist with tasks such as fetching product details, pricing, installation availability, " +
-      "estimating potential energy savings, and finding available solar incentives. " +
+      "estimating potential energy savings, financial options and finding available solar incentives. " +
       "When answering user questions, use the appropriate tool to retrieve accurate and relevant information. " +
       "For example, use the 'product_list' tool to fetch a list of available solar products when a user is browsing for suitable products, " +
       "or DOESN'T LIST a specific product, or just lists an example. " +
@@ -111,6 +113,24 @@ const shouldContinue = (state: typeof GraphAnnotation.State) => {
   });
 };
 
+const fetchFinancingOptions = async (state: typeof GraphAnnotation.State) => {
+  const { requestedProductPurchaseDetails } = state;
+
+  if (!requestedProductPurchaseDetails || !requestedProductPurchaseDetails.productDetails) {
+    throw new Error("Product details are required to fetch financing options.");
+  }
+
+  // Fetch financing options based on productId
+  const financingOptions = await financingOptionsTool.invoke({
+    productId: requestedProductPurchaseDetails.productDetails
+  });
+
+  return {
+    financingOptions: JSON.parse(financingOptions).financingOptions
+  };
+};
+
+
 const findSuitableProduct = async (state: typeof GraphAnnotation.State) => {
   const { messages } = state;
 
@@ -145,7 +165,7 @@ const findSuitableProduct = async (state: typeof GraphAnnotation.State) => {
   //     ),
   //     { name: "extract_product" }
   // );
-  
+
   // Get a list of products from our API
   const productList = await productListTool.invoke({})
 
@@ -188,34 +208,14 @@ const preparePurchaseDetails = async (state: typeof GraphAnnotation.State) => {
   );
   if (!purchaseProductTool) {
     throw new Error(
-      "Expected the last AI message to have a purchase_product tool call"
+        "Expected the last AI message to have a purchase_product tool call"
     );
   }
   let { maxPurchasePrice, productName, productDetails } = purchaseProductTool.args;
 
-  if (!productDetails) {
-    if (!productName) {
-      const toolMessages = messageCastAI.tool_calls?.map((tc) => {
-        return {
-          role: "tool",
-          content: `Please provide the missing information for the ${tc.name} tool.`,
-          id: tc.id,
-        };
-      });
-
-      return {
-        messages: [
-          ...(toolMessages ?? []),
-          {
-            role: "assistant",
-            content:
-              "Please provide either the product details or the product name to purchase.",
-          },
-        ],
-      };
-    } else {
-      productDetails = await findSuitableProduct(purchaseProductTool.args.productName);
-    }
+  if (typeof productDetails === 'string') {
+    // If productDetails is a string, assume it's the productId and proceed
+    productDetails = await findSuitableProduct(purchaseProductTool.args.productName);
   }
 
   if (!maxPurchasePrice) {
@@ -223,14 +223,29 @@ const preparePurchaseDetails = async (state: typeof GraphAnnotation.State) => {
     maxPurchasePrice = priceSnapshot.snapshot.price;
   }
 
+  // Fetch financing options
+  const financingOptions = await fetchFinancingOptions(state);
+
+  const financingOptionsText = financingOptions.financingOptions.map((option: FinancingOption) =>
+    `• ${option.type.toUpperCase()}: ${option.description} - ${option.terms} at ${option.interestRate}% interest, Monthly Payment: $${option.monthlyPayment}, Total Cost: $${option.totalCost}`
+  ).join('\n');
+
   return {
+    messages: [
+      {
+        role: "assistant",
+        content: `The product is available for purchase at a maximum price of $${maxPurchasePrice}. Here are the available financing options:\n\n${financingOptionsText}`,
+      }
+    ],
     requestedProductPurchaseDetails: {
       productDetails,
       quantity: purchaseProductTool.args.quantity ?? 1,
       maxPurchasePrice,
-    },
+    }
   };
 };
+
+
 
 const purchaseApproval = async (state: typeof GraphAnnotation.State) => {
   const { messages } = state;
