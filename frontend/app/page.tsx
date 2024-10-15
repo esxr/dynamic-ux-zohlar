@@ -5,6 +5,7 @@ import { ToolFallback } from "@/components/tools/ToolFallback";
 import { makeMarkdownText } from "@assistant-ui/react-markdown";
 import { ProductListTool } from "@/components/tools/product-list/ProductListTool";
 import { ProductDetailsTool } from "@/components/tools/product-details/ProductDetailsTool";
+import { ProductPricingTool } from "@/components/tools/product-pricing/ProductPricingTool";
 
 const MarkdownText = makeMarkdownText({});
 
@@ -26,7 +27,7 @@ export default function Home() {
           ],
         }}
         assistantMessage={{ components: { Text: MarkdownText, ToolFallback } }}
-        tools={[ProductListTool, ProductDetailsTool]}
+        tools={[ProductListTool, ProductDetailsTool, ProductPricingTool]}
       />
     </div>
   );
