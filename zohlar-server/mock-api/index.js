@@ -68,6 +68,14 @@ app.get('/purchase/confirmation', (req, res) => {
   sendMockData(res, 'purchase-confirmation.json');
 });
 
+// Mock API for financing options
+app.get('/products/financing-options', (req, res) => {
+  const { productId } = req.query;
+  logger.info(`Received request for financing options with productId: ${productId}`);
+  sendMockData(res, 'financing-options.json', (item) => item.productId === productId);
+});
+
+
 // Start the mock server
 app.listen(PORT, () => {
   logger.info(`Mock server running on http://localhost:${PORT}`);

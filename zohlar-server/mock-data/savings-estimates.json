@@ -1,0 +1,52 @@
+[
+  {
+    "location": "San Francisco, CA",
+    "averageSunHoursPerDay": 5.5,
+    "electricityRatePerKWh": 0.23
+  },
+  {
+    "location": "Los Angeles, CA",
+    "averageSunHoursPerDay": 6.0,
+    "electricityRatePerKWh": 0.20
+  },
+  {
+    "location": "New York, NY",
+    "averageSunHoursPerDay": 4.2,
+    "electricityRatePerKWh": 0.21
+  },
+  {
+    "location": "Austin, TX",
+    "averageSunHoursPerDay": 6.5,
+    "electricityRatePerKWh": 0.12
+  },
+  {
+    "location": "Seattle, WA",
+    "averageSunHoursPerDay": 3.8,
+    "electricityRatePerKWh": 0.10
+  },
+  {
+    "location": "Miami, FL",
+    "averageSunHoursPerDay": 6.4,
+    "electricityRatePerKWh": 0.11
+  },
+  {
+    "location": "Denver, CO",
+    "averageSunHoursPerDay": 5.7,
+    "electricityRatePerKWh": 0.13
+  },
+  {
+    "location": "Chicago, IL",
+    "averageSunHoursPerDay": 4.0,
+    "electricityRatePerKWh": 0.14
+  },
+  {
+    "location": "Phoenix, AZ",
+    "averageSunHoursPerDay": 7.0,
+    "electricityRatePerKWh": 0.12
+  },
+  {
+    "location": "Boston, MA",
+    "averageSunHoursPerDay": 4.1,
+    "electricityRatePerKWh": 0.22
+  }
+]

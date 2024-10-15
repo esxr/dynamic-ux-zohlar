@@ -9,6 +9,7 @@ import {
   IncentivesResponse,
   PurchaseResponse,
   ProductListResponse,
+  FinancingOptionsResponse,
 } from "types.js";
 import { z } from "zod";
 
@@ -97,6 +98,32 @@ export const productDetailsTool = tool(
     }),
   }
 );
+
+export const financingOptionsTool = tool(
+  async (input) => {
+    try {
+      const data = await callSolarCompanyAPI<FinancingOptionsResponse>({
+        endpoint: "/products/financing-options",
+        params: {
+          productId: input.productId,
+        },
+      });
+      return JSON.stringify(data, null);
+    } catch (e: any) {
+      console.warn("Error fetching financing options", e.message);
+      return `An error occurred while fetching financing options: ${e.message}`;
+    }
+  },
+  {
+    name: "financing_options",
+    description:
+      "Fetches available financing options for a specific solar product. The output includes options such as loans, leases, and payment plans with details like terms, interest rates, and total costs.",
+    schema: z.object({
+      productId: z.string().describe("The ID of the solar product."),
+    }),
+  }
+);
+
 
 export const pricingTool = tool(
   async (input) => {
@@ -266,6 +293,7 @@ export const ALL_TOOLS_LIST = [
   savingsEstimatesTool,
   incentivesTool,
   purchaseProductTool,
+  financingOptionsTool,
   webSearchTool,
 ];
 
